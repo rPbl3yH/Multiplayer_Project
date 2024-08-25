@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using Colyseus;
+using Game.Core;
 using UnityEngine;
 
 namespace Game.Multiplayer
@@ -6,7 +8,7 @@ namespace Game.Multiplayer
     public class MultiplayerManager : ColyseusManager<MultiplayerManager>
     {
         [SerializeField] private GameObject _player;
-        [SerializeField] private GameObject _enemy;
+        [SerializeField] private EnemyController _enemy;
         
         private ColyseusRoom<State> _room;
         
@@ -52,12 +54,15 @@ namespace Game.Multiplayer
         {
             var position = new Vector3(serverPlayer.x, 0f, serverPlayer.y);
             Instantiate(_player, position, Quaternion.identity);
+            
         }
 
         private void CreateEnemy(string key, Player serverPlayer)
         {
             var position = new Vector3(serverPlayer.x, 0f, serverPlayer.y);
-            Instantiate(_enemy, position, Quaternion.identity);
+            var enemyController = Instantiate(_enemy, position, Quaternion.identity);
+
+            serverPlayer.OnChange += enemyController.OnStateChanged;
         }
 
         private void RemoveEnemy(string key, Player value)
@@ -69,6 +74,11 @@ namespace Game.Multiplayer
         {
             base.OnDestroy();
             _room.Leave();
+        }
+
+        public void SendMessage(string keyEvent, Dictionary<string, object> data)
+        {
+            _room.Send(keyEvent, data);
         }
     }
 }

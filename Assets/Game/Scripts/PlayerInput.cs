@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Game.Multiplayer;
 using UnityEngine;
 
 namespace Game.Core
@@ -14,6 +16,21 @@ namespace Game.Core
             var direction = new Vector3(horizontalAxis, 0f, verticalAxis).normalized;
             
             _player.SetupMoveDirection(direction);
+            
+            SendMoveInfo();
+        }
+
+        public void SendMoveInfo()
+        {
+            var vector = _player.GetMoveInfo();
+            
+            var moveData = new Dictionary<string, object>
+            {
+                {"x", vector.x},
+                {"y", vector.z}
+            };
+            
+            MultiplayerManager.Instance.SendMessage("move", moveData);
         }
     }
 }

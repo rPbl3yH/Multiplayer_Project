@@ -22,5 +22,10 @@ namespace Game.Core
         {
             _moveDirection = moveDirection;
         }
+
+        public Vector3 GetMoveInfo()
+        {
+            return transform.position;
+        }
     }
 }
