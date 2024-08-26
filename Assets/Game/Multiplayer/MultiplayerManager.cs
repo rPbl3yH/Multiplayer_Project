@@ -52,14 +52,13 @@ namespace Game.Multiplayer
 
         private void CreatePlayer(Player serverPlayer)
         {
-            var position = new Vector3(serverPlayer.x, 0f, serverPlayer.y);
+            var position = new Vector3(serverPlayer.pX, serverPlayer.pY, serverPlayer.pZ);
             Instantiate(_player, position, Quaternion.identity);
-            
         }
 
         private void CreateEnemy(string key, Player serverPlayer)
         {
-            var position = new Vector3(serverPlayer.x, 0f, serverPlayer.y);
+            var position = new Vector3(serverPlayer.pX, serverPlayer.pY, serverPlayer.pZ);
             var enemyController = Instantiate(_enemy, position, Quaternion.identity);
 
             serverPlayer.OnChange += enemyController.OnStateChanged;
@@ -67,7 +66,7 @@ namespace Game.Multiplayer
 
         private void RemoveEnemy(string key, Player value)
         {
-            
+            //TODO:
         }
 
         protected override void OnDestroy()

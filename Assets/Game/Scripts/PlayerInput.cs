@@ -22,12 +22,16 @@ namespace Game.Core
 
         public void SendMoveInfo()
         {
-            var vector = _player.GetMoveInfo();
+            _player.GetMoveInfo(out var position, out var velocity);
             
             var moveData = new Dictionary<string, object>
             {
-                {"x", vector.x},
-                {"y", vector.z}
+                {"pX", position.x},
+                {"pY", position.y},
+                {"pZ", position.z},
+                {"vX", velocity.x},
+                {"vY", velocity.y},
+                {"vZ", velocity.z},
             };
             
             MultiplayerManager.Instance.SendMessage("move", moveData);

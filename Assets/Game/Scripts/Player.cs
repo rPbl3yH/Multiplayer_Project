@@ -4,18 +4,25 @@ namespace Game.Core
 {
     public class Player : MonoBehaviour
     {
+        [SerializeField] private Rigidbody _rigidbody;
         [SerializeField] private float _speed = 3f;
         
         private Vector3 _moveDirection;
 
-        private void Update()
+        private void FixedUpdate()
         {
             Move();
         }
 
         private void Move()
         {
-            transform.position += _moveDirection * _speed * Time.deltaTime;
+            var velocity = _moveDirection.z * transform.forward + _moveDirection.x * transform.right;
+            velocity.Normalize();
+            velocity *= _speed;
+            _rigidbody.velocity = velocity;
+            
+            // _rigidbody.velocity = _moveDirection * _speed;
+            // transform.position += _moveDirection * _speed * Time.deltaTime;
         }
         
         public void SetupMoveDirection(Vector3 moveDirection)
@@ -23,9 +30,10 @@ namespace Game.Core
             _moveDirection = moveDirection;
         }
 
-        public Vector3 GetMoveInfo()
+        public void GetMoveInfo(out Vector3 position, out Vector3 velocity)
         {
-            return transform.position;
+            position = transform.position;
+            velocity = _rigidbody.velocity;
         }
     }
 }
