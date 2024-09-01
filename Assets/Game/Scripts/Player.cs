@@ -16,6 +16,8 @@ namespace Game.Core
         [SerializeField] private float _jumpForce = 50f;
         [SerializeField] private CheckFly _checkFly;
         [SerializeField] private float _jumpDelay = .2f;
+
+        [SerializeField] private Gun _gun;
         
         private Vector3 _moveDirection;
         private float _yRotate;
@@ -84,6 +86,11 @@ namespace Game.Core
 
             eulerX = _head.localEulerAngles.x;
             eulerY = transform.eulerAngles.y;
+        }
+
+        public void Shoot()
+        {
+            _gun.Shoot();
         }
     }
 }

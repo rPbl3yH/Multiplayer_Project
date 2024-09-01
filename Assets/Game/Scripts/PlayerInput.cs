@@ -26,6 +26,11 @@ namespace Game.Core
             {
                 _player.Jump();
             }
+
+            if (Input.GetMouseButton(0))
+            {
+                _player.Shoot();
+            }
             
             SendMoveInfo();
         }
