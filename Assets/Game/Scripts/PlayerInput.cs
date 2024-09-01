@@ -32,7 +32,7 @@ namespace Game.Core
 
         public void SendMoveInfo()
         {
-            _player.GetMoveInfo(out var position, out var velocity);
+            _player.GetMoveInfo(out var position, out var velocity, out var eulerX, out var eulerY);
             
             var moveData = new Dictionary<string, object>
             {
@@ -42,6 +42,8 @@ namespace Game.Core
                 {"vX", velocity.x},
                 {"vY", velocity.y},
                 {"vZ", velocity.z},
+                {"rX", eulerX},
+                {"rY", eulerY},
             };
             
             MultiplayerManager.Instance.SendMessage("move", moveData);

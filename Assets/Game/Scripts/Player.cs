@@ -67,12 +67,6 @@ namespace Game.Core
             _yRotate = 0f;
         }
 
-        public void GetMoveInfo(out Vector3 position, out Vector3 velocity)
-        {
-            position = transform.position;
-            velocity = _rigidbody.velocity;
-        }
-
         public void Jump()
         {
             if (_checkFly.IsFly) return;
@@ -81,6 +75,15 @@ namespace Game.Core
 
             _jumpTime = Time.time;
             _rigidbody.AddForce(Vector3.up * _jumpForce, ForceMode.VelocityChange);
+        }
+
+        public void GetMoveInfo(out Vector3 position, out Vector3 velocity, out float eulerX, out float eulerY)
+        {
+            position = transform.position;
+            velocity = _rigidbody.velocity;
+
+            eulerX = _head.localEulerAngles.x;
+            eulerY = transform.eulerAngles.y;
         }
     }
 }

@@ -6,6 +6,8 @@ namespace Game.Core
     public class Enemy : Character
     {
         public Vector3 TargetPosition => _targetPosition;
+
+        [SerializeField] private Transform _head;
         
         private Vector3 _targetPosition;
         private float _velocityMagnitude;
@@ -38,6 +40,16 @@ namespace Game.Core
             _velocityMagnitude = velocity.magnitude;
             _targetPosition = position + velocity * interval;
             Velocity = velocity;
+        }
+
+        public void SetRotateX(float eulerX)
+        {
+            _head.localEulerAngles = new Vector3(eulerX, 0f, 0f);
+        }
+
+        public void SetRotateY(float eulerY)
+        {
+            transform.localEulerAngles = new Vector3(0f, eulerY, 0f);
         }
     }
 }

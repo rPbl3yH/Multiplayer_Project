@@ -13,6 +13,22 @@ namespace Game.Core
         private List<float> _receivedTimeIntervals = new(4) {0, 0, 0, 0};
         private float _lastTime;
 
+        private global::Player _serverPlayer;
+
+        public void Construct(global::Player serverPlayer)
+        {
+            _serverPlayer = serverPlayer;
+            _enemy.SetSpeed(_serverPlayer.speed);
+
+            _serverPlayer.OnChange += OnStateChanged;
+        }
+
+        public void Destroy()
+        {
+            _serverPlayer.OnChange -= OnStateChanged;
+            Destroy(gameObject);
+        }
+
         private void SaveReceivedTime()
         {
             var interval = Time.time - _lastTime;
@@ -21,13 +37,13 @@ namespace Game.Core
             _receivedTimeIntervals.Add(interval);
             _receivedTimeIntervals.RemoveAt(0);
         }
-        
+
         public void OnStateChanged(List<DataChange> changes)
         {
             SaveReceivedTime();
             
             var position = _enemy.TargetPosition;
-            var velocity = Vector3.zero;
+            var velocity = _enemy.Velocity;
             
             foreach (DataChange dataChange in changes)
             {
@@ -50,6 +66,12 @@ namespace Game.Core
                         break;
                     case "vZ":
                         velocity.z = (float)dataChange.Value;
+                        break;
+                    case "rX":
+                        _enemy.SetRotateX((float)dataChange.Value);
+                        break;
+                    case "rY":
+                        _enemy.SetRotateY((float)dataChange.Value);
                         break;
                     default:
                         Debug.Log($"No handler for data {dataChange.Field}");

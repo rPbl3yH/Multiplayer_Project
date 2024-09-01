@@ -7,7 +7,7 @@ namespace Game.Multiplayer
 {
     public class MultiplayerManager : ColyseusManager<MultiplayerManager>
     {
-        [SerializeField] private GameObject _player;
+        [SerializeField] private Core.Player _player;
         [SerializeField] private EnemyController _enemy;
         
         private ColyseusRoom<State> _room;
@@ -21,7 +21,11 @@ namespace Game.Multiplayer
 
         private async void Connect()
         {
-            _room = await Instance.client.JoinOrCreate<State>("state_handler");
+            var options = new Dictionary<string, object>()
+            {
+                {"speed", _player.Speed},
+            };
+            _room = await Instance.client.JoinOrCreate<State>("state_handler", options);
             _room.OnStateChange += OnRoomStateChanged;
         }
 
@@ -61,7 +65,7 @@ namespace Game.Multiplayer
             var position = new Vector3(serverPlayer.pX, serverPlayer.pY, serverPlayer.pZ);
             var enemyController = Instantiate(_enemy, position, Quaternion.identity);
 
-            serverPlayer.OnChange += enemyController.OnStateChanged;
+            enemyController.Construct(serverPlayer);
         }
 
         private void RemoveEnemy(string key, Player value)
