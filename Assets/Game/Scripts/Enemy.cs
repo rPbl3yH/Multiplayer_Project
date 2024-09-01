@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Game.Core
 {
-    public class Enemy : MonoBehaviour
+    public class Enemy : Character
     {
         public Vector3 TargetPosition => _targetPosition;
         
@@ -28,10 +28,16 @@ namespace Game.Core
             }
         }
 
+        public void SetSpeed(float speed)
+        {
+            Speed = speed;
+        }
+        
         public void SetMovementData(in Vector3 position, in Vector3 velocity, in float interval)
         {
             _velocityMagnitude = velocity.magnitude;
             _targetPosition = position + velocity * interval;
+            Velocity = velocity;
         }
     }
 }

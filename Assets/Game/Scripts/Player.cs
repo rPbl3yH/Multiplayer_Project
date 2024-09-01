@@ -3,10 +3,9 @@ using UnityEngine;
 
 namespace Game.Core
 {
-    public class Player : MonoBehaviour
+    public class Player : Character
     {
         [SerializeField] private Rigidbody _rigidbody;
-        [SerializeField] private float _speed = 3f;
         [SerializeField] private Transform _head;
         [SerializeField] private Transform _cameraPoint;
 
@@ -15,12 +14,14 @@ namespace Game.Core
 
         [Header("Jump")]
         [SerializeField] private float _jumpForce = 50f;
+        [SerializeField] private CheckFly _checkFly;
+        [SerializeField] private float _jumpDelay = .2f;
         
         private Vector3 _moveDirection;
         private float _yRotate;
         private float _xRotate;
 
-        private bool _isGrounded;
+        private float _jumpTime;
 
         private void Start()
         {
@@ -52,14 +53,12 @@ namespace Game.Core
         {
             var velocity = _moveDirection.z * transform.forward + _moveDirection.x * transform.right;
             velocity.Normalize();
-            velocity *= _speed;
+            velocity *= Speed;
             
             velocity.y = _rigidbody.velocity.y;
+            Velocity = velocity;
             
-            _rigidbody.velocity = velocity;
-            
-            // _rigidbody.velocity = _moveDirection * _speed;
-            // transform.position += _moveDirection * _speed * Time.deltaTime;
+            _rigidbody.velocity = Velocity;
         }
 
         private void Rotate()
@@ -76,28 +75,12 @@ namespace Game.Core
 
         public void Jump()
         {
-            if (!_isGrounded)
-            {
-                return;
-            }
-            
+            if (_checkFly.IsFly) return;
+
+            if (Time.time - _jumpTime < _jumpDelay) return;
+
+            _jumpTime = Time.time;
             _rigidbody.AddForce(Vector3.up * _jumpForce, ForceMode.VelocityChange);
-        }
-
-        private void OnCollisionEnter(Collision other)
-        {
-            foreach (ContactPoint contactPoint in other.contacts) 
-            {
-                if (contactPoint.normal.y > 0.45f)
-                {
-                    _isGrounded = true;
-                }
-            }
-        }
-
-        private void OnCollisionExit(Collision other)
-        {
-            _isGrounded = false;
         }
     }
 }
