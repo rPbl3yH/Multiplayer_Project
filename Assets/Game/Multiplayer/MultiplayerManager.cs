@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Colyseus;
 using Game.Core;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace Game.Multiplayer
@@ -12,6 +13,8 @@ namespace Game.Multiplayer
         
         private ColyseusRoom<State> _room;
         
+        private Dictionary<string, EnemyController> _enemies = new();
+
         protected override void Awake()
         {
             base.Awake();
@@ -27,6 +30,24 @@ namespace Game.Multiplayer
             };
             _room = await Instance.client.JoinOrCreate<State>("state_handler", options);
             _room.OnStateChange += OnRoomStateChanged;
+            
+            _room.OnMessage<string>("Shoot", ShootHandler);
+        }
+
+        private void ShootHandler(string shotInfoJson)
+        {
+            var shootInfo = JsonConvert.DeserializeObject<ShootInfo>(shotInfoJson);
+            var clientKey = shootInfo.clientId;
+
+            if (_enemies.TryGetValue(clientKey, out var enemyController))
+            {
+                enemyController.Shoot(shootInfo);
+            }
+            else
+            {
+                Debug.LogError("Handle not exist enemy ");
+            }
+
         }
 
         private void OnRoomStateChanged(State state, bool isFirstState)
@@ -66,11 +87,17 @@ namespace Game.Multiplayer
             var enemyController = Instantiate(_enemy, position, Quaternion.identity);
 
             enemyController.Construct(serverPlayer);
+
+            _enemies.Add(key, enemyController);
         }
 
         private void RemoveEnemy(string key, Player value)
         {
-            //TODO:
+            if (!_enemies.TryGetValue(key, out var enemyController)) 
+                return;
+            
+            enemyController.Destroy();
+            _enemies.Remove(key);
         }
 
         protected override void OnDestroy()
@@ -82,6 +109,16 @@ namespace Game.Multiplayer
         public void SendMessage(string keyEvent, Dictionary<string, object> data)
         {
             _room.Send(keyEvent, data);
+        }
+
+        public void SendMessage(string keyEvent, string data)
+        {
+            _room.Send(keyEvent, data);
+        }
+
+        public string GetClientId()
+        {
+            return _room.SessionId;
         }
     }
 }

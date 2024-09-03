@@ -9,6 +9,7 @@ namespace Game.Core
     public class EnemyController : MonoBehaviour
     {
         [SerializeField] private Enemy _enemy;
+        [SerializeField] private EnemyGun _enemyGun;
 
         private List<float> _receivedTimeIntervals = new(4) {0, 0, 0, 0};
         private float _lastTime;
@@ -93,6 +94,14 @@ namespace Game.Core
             var allValue = list.Sum();
 
             return allValue / list.Count;
+        }
+
+        public void Shoot(in ShootInfo shootInfo)
+        {
+            var shootPosition = new Vector3(shootInfo.pX, shootInfo.pY, shootInfo.pZ);
+            var shootVelocity = new Vector3(shootInfo.dX, shootInfo.dY, shootInfo.dZ);
+            
+            _enemyGun.Shoot(shootPosition, shootVelocity);
         }
     }
 }

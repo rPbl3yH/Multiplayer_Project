@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Game.Multiplayer;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace Game.Core
@@ -16,23 +17,32 @@ namespace Game.Core
 
             var direction = new Vector3(horizontalAxis, 0f, verticalAxis).normalized;
             
-
             var mouseX = Input.GetAxis("Mouse X");
             var mouseY = Input.GetAxis("Mouse Y");
             _player.SetInput(direction, mouseX);
             _player.Rotate(-mouseY * _mouseSensitivity);
-
-            if (Input.GetKeyDown(KeyCode.Space))
+            
+            var isJump = Input.GetKeyDown(KeyCode.Space);
+            var isShoot = Input.GetMouseButton(0);
+            
+            if (isJump)
             {
                 _player.Jump();
             }
 
-            if (Input.GetMouseButton(0))
+            if (isShoot && _player.TryShoot(out var shootInfo))
             {
-                _player.Shoot();
+                SendShootInfo(ref shootInfo);
             }
             
             SendMoveInfo();
+        }
+
+        private void SendShootInfo(ref ShootInfo shootInfo)
+        {
+            shootInfo.clientId = MultiplayerManager.Instance.GetClientId();
+            var jsonData = JsonConvert.SerializeObject(shootInfo);
+            MultiplayerManager.Instance.SendMessage("shoot", jsonData);
         }
 
         public void SendMoveInfo()
@@ -53,5 +63,17 @@ namespace Game.Core
             
             MultiplayerManager.Instance.SendMessage("move", moveData);
         }
+    }
+
+    public struct ShootInfo
+    {
+        public string clientId;
+        public float pX;
+        public float pY;
+        public float pZ;
+
+        public float dX;
+        public float dY;
+        public float dZ;
     }
 }
