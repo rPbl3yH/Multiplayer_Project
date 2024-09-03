@@ -8,6 +8,7 @@ namespace Game.Core
         public Vector3 TargetPosition => _targetPosition;
 
         [SerializeField] private Transform _head;
+        [SerializeField] private Health _health;
         
         private Vector3 _targetPosition;
         private float _velocityMagnitude;
@@ -34,7 +35,18 @@ namespace Game.Core
         {
             Speed = speed;
         }
-        
+
+        public void SetMaxHealth(int health)
+        {
+            MaxHealth = health;
+            _health.Construct(health);
+        }
+
+        public void ApplyDamage(int damage)
+        {
+            _health.ApplyDamage(damage);
+        }
+
         public void SetMovementData(in Vector3 position, in Vector3 velocity, in float interval)
         {
             _velocityMagnitude = velocity.magnitude;

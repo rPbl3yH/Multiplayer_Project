@@ -8,6 +8,8 @@ namespace Game.Core
 
         [SerializeField] private float _shootForce = 5f;
         [SerializeField] private float _shootDelay = .2f;
+        [SerializeField] private int _damage = 1;
+        
         private float _lastShootTime;
         
         public bool TryShoot(out ShootInfo shootInfo)
@@ -21,7 +23,7 @@ namespace Game.Core
             var velocity = _firePoint.forward * _shootForce;
             
             var bullet = Instantiate(BulletPrefab, spawnPosition, _firePoint.rotation);
-            bullet.Construct(velocity);
+            bullet.Construct(velocity, _damage);
             OnShoot?.Invoke();
 
             shootInfo.pX = spawnPosition.x;

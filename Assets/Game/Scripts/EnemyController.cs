@@ -20,6 +20,7 @@ namespace Game.Core
         {
             _serverPlayer = serverPlayer;
             _enemy.SetSpeed(_serverPlayer.speed);
+            _enemy.SetMaxHealth(_serverPlayer.hp);
 
             _serverPlayer.OnChange += OnStateChanged;
         }

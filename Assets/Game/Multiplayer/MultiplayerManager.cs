@@ -27,6 +27,7 @@ namespace Game.Multiplayer
             var options = new Dictionary<string, object>()
             {
                 {"speed", _player.Speed},
+                {"hp", _player.MaxHealth}
             };
             _room = await Instance.client.JoinOrCreate<State>("state_handler", options);
             _room.OnStateChange += OnRoomStateChanged;

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace Game.Core
@@ -8,10 +9,13 @@ namespace Game.Core
     {
         [SerializeField] private Rigidbody _rigidbody;
         [SerializeField] private float _lifeTime = 5f;
+        
+        [ShowInInspector, HideInEditorMode] private int _damage;
 
-        public void Construct(in Vector3 velocity)
+        public void Construct(in Vector3 velocity, int damage = 0)
         {
             _rigidbody.velocity = velocity;
+            _damage = damage;
 
             StartCoroutine(LifeCoroutine());
         }
@@ -29,7 +33,10 @@ namespace Game.Core
 
         private void OnCollisionEnter(Collision other)
         {
-            Debug.Log($"On collision = {other.collider.name}");
+            if (other.gameObject.TryGetComponent(out Enemy enemy))
+            {
+                enemy.ApplyDamage(_damage);
+            }
             Destroy();
         }
     }
