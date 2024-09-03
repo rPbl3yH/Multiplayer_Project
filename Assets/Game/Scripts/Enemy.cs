@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using Game.Multiplayer;
 using UnityEngine;
 
 namespace Game.Core
@@ -12,6 +14,13 @@ namespace Game.Core
         
         private Vector3 _targetPosition;
         private float _velocityMagnitude;
+
+        private string _sessionId;
+
+        public void Construct(string sessionId)
+        {
+            _sessionId = sessionId;
+        }
 
         private void Start()
         {
@@ -42,9 +51,17 @@ namespace Game.Core
             _health.Construct(health);
         }
 
-        public void ApplyDamage(int damage)
+        public void TakeDamage(int damage)
         {
-            _health.ApplyDamage(damage);
+            _health.TakeDamage(damage);
+
+            var data = new Dictionary<string, object>()
+            {
+                {"id", _sessionId},
+                {"value", damage}
+            };
+            
+            MultiplayerManager.Instance.SendMessage("damage", data);
         }
 
         public void SetMovementData(in Vector3 position, in Vector3 velocity, in float interval)

@@ -35,7 +35,7 @@ namespace Game.Core
         {
             if (other.gameObject.TryGetComponent(out Enemy enemy))
             {
-                enemy.ApplyDamage(_damage);
+                enemy.TakeDamage(_damage);
             }
             Destroy();
         }

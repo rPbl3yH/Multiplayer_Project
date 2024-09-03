@@ -27,7 +27,7 @@ namespace Game.Multiplayer
             var options = new Dictionary<string, object>()
             {
                 {"speed", _player.Speed},
-                {"hp", _player.MaxHealth}
+                {"maxHp", _player.MaxHealth}
             };
             _room = await Instance.client.JoinOrCreate<State>("state_handler", options);
             _room.OnStateChange += OnRoomStateChanged;
@@ -79,7 +79,9 @@ namespace Game.Multiplayer
         private void CreatePlayer(Player serverPlayer)
         {
             var position = new Vector3(serverPlayer.pX, serverPlayer.pY, serverPlayer.pZ);
-            Instantiate(_player, position, Quaternion.identity);
+            var player = Instantiate(_player, position, Quaternion.identity);
+
+            serverPlayer.OnChange += player.OnChange;
         }
 
         private void CreateEnemy(string key, Player serverPlayer)
@@ -87,7 +89,7 @@ namespace Game.Multiplayer
             var position = new Vector3(serverPlayer.pX, serverPlayer.pY, serverPlayer.pZ);
             var enemyController = Instantiate(_enemy, position, Quaternion.identity);
 
-            enemyController.Construct(serverPlayer);
+            enemyController.Construct(key, serverPlayer);
 
             _enemies.Add(key, enemyController);
         }

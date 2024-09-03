@@ -16,11 +16,12 @@ namespace Game.Core
 
         private global::Player _serverPlayer;
 
-        public void Construct(global::Player serverPlayer)
+        public void Construct(string sessionId, global::Player serverPlayer)
         {
             _serverPlayer = serverPlayer;
+            _enemy.Construct(sessionId);
             _enemy.SetSpeed(_serverPlayer.speed);
-            _enemy.SetMaxHealth(_serverPlayer.hp);
+            _enemy.SetMaxHealth(_serverPlayer.maxHp);
 
             _serverPlayer.OnChange += OnStateChanged;
         }

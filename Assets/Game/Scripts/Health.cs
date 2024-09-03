@@ -21,7 +21,7 @@ namespace Game.Core
             OnMaxHealthChanged?.Invoke(_maxHealth);
         }
 
-        public void SetCurrent(int health)
+        public void SetHealth(int health)
         {
             _current = health;
             OnHealthChanged?.Invoke(_current);
@@ -32,11 +32,11 @@ namespace Game.Core
             }
         }
 
-        public void ApplyDamage(int damage)
+        public void TakeDamage(int damage)
         {
             var appliedDamage = Mathf.Min(_current, damage);
             var hp = _current - appliedDamage;
-            SetCurrent(hp);
+            SetHealth(hp);
         }
     }
 }

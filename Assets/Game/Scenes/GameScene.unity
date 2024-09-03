@@ -561,7 +561,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _colyseusSettings: {fileID: 11400000, guid: 5004ad9b362dc4c03b641c1d030488ba, type: 2}
-  _player: {fileID: 8119105399679078191, guid: 502b9f72353f940a99e3ee18a3b99912, type: 3}
+  _player: {fileID: 7277914467666042559, guid: 502b9f72353f940a99e3ee18a3b99912, type: 3}
   _enemy: {fileID: 6250089517982076307, guid: 9b9a330161ce0420f99e3fe590240b53, type: 3}
 --- !u!1001 &1336005645
 PrefabInstance:
@@ -579,6 +579,16 @@ PrefabInstance:
     - target: {fileID: 2237018718556778050, guid: 502b9f72353f940a99e3ee18a3b99912,
         type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5302138590767489862, guid: 502b9f72353f940a99e3ee18a3b99912,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5760413027837123943, guid: 502b9f72353f940a99e3ee18a3b99912,
+        type: 3}
+      propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6871133395195296965, guid: 502b9f72353f940a99e3ee18a3b99912,
@@ -634,6 +644,21 @@ PrefabInstance:
     - target: {fileID: 6871133395195296965, guid: 502b9f72353f940a99e3ee18a3b99912,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7493177864397653946, guid: 502b9f72353f940a99e3ee18a3b99912,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7501245169823209093, guid: 502b9f72353f940a99e3ee18a3b99912,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8203052826740887527, guid: 502b9f72353f940a99e3ee18a3b99912,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
