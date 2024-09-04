@@ -12,9 +12,9 @@ namespace Game.Core
         
         private float _lastShootTime;
         
-        public bool TryShoot(out ShootInfo shootInfo)
+        public bool TryShoot(out ShootData shootData)
         {
-            shootInfo = new ShootInfo();
+            shootData = new ShootData();
             
             if(Time.time - _lastShootTime < _shootDelay) return false;
             
@@ -26,13 +26,13 @@ namespace Game.Core
             bullet.Construct(velocity, _damage);
             OnShoot?.Invoke();
 
-            shootInfo.pX = spawnPosition.x;
-            shootInfo.pY = spawnPosition.y;
-            shootInfo.pZ = spawnPosition.z;
+            shootData.pX = spawnPosition.x;
+            shootData.pY = spawnPosition.y;
+            shootData.pZ = spawnPosition.z;
 
-            shootInfo.dX = velocity.x;
-            shootInfo.dY = velocity.y;
-            shootInfo.dZ = velocity.z;
+            shootData.dX = velocity.x;
+            shootData.dY = velocity.y;
+            shootData.dZ = velocity.z;
             return true;
         }
     }

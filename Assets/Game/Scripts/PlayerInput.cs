@@ -9,9 +9,15 @@ namespace Game.Core
     {
         [SerializeField] private Player _player;
         [SerializeField] private float _mouseSensitivity = 2f;
-        
+        private bool _isEnable;
+
         private void Update()
         {
+            if (!_isEnable)
+            {
+                return;
+            }
+            
             var horizontalAxis = Input.GetAxisRaw("Horizontal");
             var verticalAxis = Input.GetAxisRaw("Vertical");
 
@@ -38,10 +44,10 @@ namespace Game.Core
             SendMoveInfo();
         }
 
-        private void SendShootInfo(ref ShootInfo shootInfo)
+        private void SendShootInfo(ref ShootData shootData)
         {
-            shootInfo.clientId = MultiplayerManager.Instance.GetClientId();
-            var jsonData = JsonConvert.SerializeObject(shootInfo);
+            shootData.clientId = MultiplayerManager.Instance.GetClientId();
+            var jsonData = JsonConvert.SerializeObject(shootData);
             MultiplayerManager.Instance.SendMessage("shoot", jsonData);
         }
 
@@ -63,17 +69,32 @@ namespace Game.Core
             
             MultiplayerManager.Instance.SendMessage("move", moveData);
         }
-    }
 
-    public struct ShootInfo
-    {
-        public string clientId;
-        public float pX;
-        public float pY;
-        public float pZ;
+        public void SendMoveInfo(float x, float z)
+        {
+            var moveData = new Dictionary<string, object>
+            {
+                {"pX", x},
+                {"pY", 0f},
+                {"pZ", z},
+                {"vX", 0f},
+                {"vY", 0f},
+                {"vZ", 0f},
+                {"rX", 0f},
+                {"rY", 0f},
+            };
+            
+            MultiplayerManager.Instance.SendMessage("move", moveData);
+        }
 
-        public float dX;
-        public float dY;
-        public float dZ;
+        public void Deactivate()
+        {
+            _isEnable = false;
+        }
+
+        public void Activate()
+        {
+            _isEnable = true;
+        }
     }
 }

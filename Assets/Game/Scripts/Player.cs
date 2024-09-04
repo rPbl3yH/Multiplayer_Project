@@ -7,6 +7,8 @@ namespace Game.Core
 {
     public class Player : Character
     {
+        public PlayerController PlayerController { get; private set; }
+        
         [SerializeField] private Health _health;
         [SerializeField] private Rigidbody _rigidbody;
         [SerializeField] private Transform _head;
@@ -25,8 +27,12 @@ namespace Game.Core
         private Vector3 _moveDirection;
         private float _yRotate;
         private float _xRotate;
-
         private float _jumpTime;
+
+        public void Construct(PlayerController playerController)
+        {
+            PlayerController = playerController;
+        }
 
         private void Start()
         {
@@ -93,9 +99,9 @@ namespace Game.Core
             eulerY = transform.eulerAngles.y;
         }
 
-        public bool TryShoot(out ShootInfo shootInfo)
+        public bool TryShoot(out ShootData shootData)
         {
-            return _gun.TryShoot(out shootInfo);
+            return _gun.TryShoot(out shootData);
         }
 
         public void OnChange(List<DataChange> changes)
@@ -104,6 +110,10 @@ namespace Game.Core
             {
                 switch (dataChange.Field)
                 {
+                    case "loss":
+                        var playerLose = (ushort)dataChange.Value;
+                        PlayerUIManager.Instance.ScoreView.SetPlayerScore(playerLose);
+                        break;
                     case "hp":
                         var hp = (short)dataChange.Value;
                         _health.SetHealth(hp);
@@ -113,6 +123,11 @@ namespace Game.Core
                         break;
                 }
             }
+        }
+
+        public void ResetVelocity()
+        {
+            Velocity = Vector3.zero;
         }
     }
 }

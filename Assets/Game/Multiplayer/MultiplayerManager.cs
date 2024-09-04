@@ -37,12 +37,12 @@ namespace Game.Multiplayer
 
         private void ShootHandler(string shotInfoJson)
         {
-            var shootInfo = JsonConvert.DeserializeObject<ShootInfo>(shotInfoJson);
-            var clientKey = shootInfo.clientId;
+            var shootData = JsonConvert.DeserializeObject<ShootData>(shotInfoJson);
+            var clientKey = shootData.clientId;
 
             if (_enemies.TryGetValue(clientKey, out var enemyController))
             {
-                enemyController.Shoot(shootInfo);
+                enemyController.Shoot(shootData);
             }
             else
             {
@@ -82,6 +82,9 @@ namespace Game.Multiplayer
             var player = Instantiate(_player, position, Quaternion.identity);
 
             serverPlayer.OnChange += player.OnChange;
+
+            _room.OnMessage<string>("Restart", player.PlayerController.OnRestart);
+
         }
 
         private void CreateEnemy(string key, Player serverPlayer)

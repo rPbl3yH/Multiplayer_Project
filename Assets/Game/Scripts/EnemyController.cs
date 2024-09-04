@@ -52,6 +52,16 @@ namespace Game.Core
             {
                 switch (dataChange.Field)
                 {
+                    case "loss":
+                        var playerLose = (ushort)dataChange.Value;
+                        PlayerUIManager.Instance.ScoreView.SetEnemyScore(playerLose);
+                        break;
+                    case "hp":
+                        if ((short)dataChange.Value > (short)dataChange.PreviousValue)
+                        {
+                            _enemy.SetMaxHealth((short)dataChange.Value);
+                        }
+                        break;
                     case "pX":
                         position.x = (float)dataChange.Value;
                         break;
@@ -98,10 +108,10 @@ namespace Game.Core
             return allValue / list.Count;
         }
 
-        public void Shoot(in ShootInfo shootInfo)
+        public void Shoot(in ShootData shootData)
         {
-            var shootPosition = new Vector3(shootInfo.pX, shootInfo.pY, shootInfo.pZ);
-            var shootVelocity = new Vector3(shootInfo.dX, shootInfo.dY, shootInfo.dZ);
+            var shootPosition = new Vector3(shootData.pX, shootData.pY, shootData.pZ);
+            var shootVelocity = new Vector3(shootData.dX, shootData.dY, shootData.dZ);
             
             _enemyGun.Shoot(shootPosition, shootVelocity);
         }
