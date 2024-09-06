@@ -8,6 +8,8 @@ namespace Game.Core
 {
     public class EnemyController : MonoBehaviour
     {
+        public Enemy Enemy => _enemy;
+        
         [SerializeField] private Enemy _enemy;
         [SerializeField] private EnemyGun _enemyGun;
 

@@ -1,4 +1,5 @@
 using System.Collections;
+using Game.Multiplayer;
 using Newtonsoft.Json;
 using UnityEngine;
 
@@ -16,7 +17,7 @@ namespace Game.Core
             Activate();
         }
 
-        public void OnRestart(string jsonRestartData)
+        public void OnRestart(int spawnIndex)
         {
             Deactivate();
             StartCoroutine(DelayCoroutine());
@@ -24,10 +25,14 @@ namespace Game.Core
             _player.SetInput(Vector3.zero, 0);
             _player.ResetVelocity();
             
-            var data = JsonConvert.DeserializeObject<RestartData>(jsonRestartData);
-            transform.position = new Vector3(data.x, 0f, data.z);
+            MultiplayerManager.Instance.SpawnPointsService.GetPoint(spawnIndex, out var position, out var rotation);
+
+            transform.position = position;
+            rotation.x = 0f;
+            rotation.z = 0f;
+            transform.rotation = Quaternion.Euler(rotation);
             
-            _playerInput.SendMoveInfo(data.x, data.z);
+            _playerInput.SendMoveInfo(position, rotation);
         }
 
         private IEnumerator DelayCoroutine()

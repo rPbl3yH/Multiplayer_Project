@@ -8,12 +8,15 @@ namespace Game.Multiplayer
 {
     public class MultiplayerManager : ColyseusManager<MultiplayerManager>
     {
+        public SpawnPointsService SpawnPointsService;
+
         [SerializeField] private Core.Player _player;
         [SerializeField] private EnemyController _enemy;
-        
+        [SerializeField] private SkinService _skinService;
+
         private ColyseusRoom<State> _room;
         
-        private Dictionary<string, EnemyController> _enemies = new();
+        private readonly Dictionary<string, EnemyController> _enemies = new();
 
         protected override void Awake()
         {
@@ -24,10 +27,19 @@ namespace Game.Multiplayer
 
         private async void Connect()
         {
+            SpawnPointsService.GetPoint(Random.Range(0, SpawnPointsService.Length), 
+                out var position, out var rotation);
+            
             var options = new Dictionary<string, object>()
             {
+                {"skins", _skinService.Length},
+                {"pointsLength", SpawnPointsService.Length},
                 {"speed", _player.Speed},
-                {"maxHp", _player.MaxHealth}
+                {"maxHp", _player.MaxHealth},
+                {"pX", position.x},
+                {"pY", position.y},
+                {"pZ", position.z},
+                {"rY", rotation.y},
             };
             _room = await Instance.client.JoinOrCreate<State>("state_handler", options);
             _room.OnStateChange += OnRoomStateChanged;
@@ -79,22 +91,32 @@ namespace Game.Multiplayer
         private void CreatePlayer(Player serverPlayer)
         {
             var position = new Vector3(serverPlayer.pX, serverPlayer.pY, serverPlayer.pZ);
-            var player = Instantiate(_player, position, Quaternion.identity);
+            var rotation = Quaternion.Euler(0, serverPlayer.rY, 0);
+            var player = Instantiate(_player, position, rotation);
+
+            SetupSkin(serverPlayer.skinIndex, player);
 
             serverPlayer.OnChange += player.OnChange;
 
-            _room.OnMessage<string>("Restart", player.PlayerController.OnRestart);
-
+            _room.OnMessage<int>("Restart", player.PlayerController.OnRestart);
         }
 
         private void CreateEnemy(string key, Player serverPlayer)
         {
             var position = new Vector3(serverPlayer.pX, serverPlayer.pY, serverPlayer.pZ);
-            var enemyController = Instantiate(_enemy, position, Quaternion.identity);
+            var rotation = Quaternion.Euler(serverPlayer.rX, serverPlayer.rY, 0);
+            var enemyController = Instantiate(_enemy, position, rotation);
 
             enemyController.Construct(key, serverPlayer);
+            SetupSkin(serverPlayer.skinIndex, enemyController.Enemy);
 
             _enemies.Add(key, enemyController);
+        }
+
+        private void SetupSkin(int index, Character entity)
+        {
+            _skinService.GetSkin(index, out var skinMaterial);
+            entity.SkinComponent.SetMaterial(skinMaterial);
         }
 
         private void RemoveEnemy(string key, Player value)

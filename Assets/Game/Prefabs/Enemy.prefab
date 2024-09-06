@@ -392,7 +392,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7adeba41a984d599bb58377dbd9bc86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _camera: {fileID: 0}
 --- !u!1 &9128747270545475728
 GameObject:
   m_ObjectHideFlags: 0
@@ -461,6 +460,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Speed>k__BackingField: 2
   <MaxHealth>k__BackingField: 10
+  SkinComponent: {fileID: 9210456156013318737}
   _head: {fileID: 5465290244889032489}
   _health: {fileID: 8796492207254355232}
 --- !u!136 &1850026013390299126
@@ -628,3 +628,15 @@ Animator:
     type: 3}
   m_PrefabInstance: {fileID: 2221551024324103572}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &9210456156013318737 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6991440337101496261, guid: 5b9e5150db7b2204d98b5f69a683d1e6,
+    type: 3}
+  m_PrefabInstance: {fileID: 2221551024324103572}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fac7203f138b41149badcda5ce81e9d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

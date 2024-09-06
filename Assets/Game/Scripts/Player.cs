@@ -119,7 +119,7 @@ namespace Game.Core
                         _health.SetHealth(hp);
                         break;
                     default:
-                        Debug.Log($"No handler for data {dataChange.Field}");
+                        // Debug.Log($"No handler for data {dataChange.Field}");
                         break;
                 }
             }

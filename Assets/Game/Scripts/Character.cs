@@ -11,5 +11,7 @@ namespace Game.Core
         public int MaxHealth { get; protected set; } = 10;
         
         public Vector3 Velocity { get; protected set; }
+
+        public SkinComponent SkinComponent;
     }
 }
