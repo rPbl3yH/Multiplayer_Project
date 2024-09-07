@@ -131,7 +131,7 @@ namespace Game.Multiplayer
         protected override void OnDestroy()
         {
             base.OnDestroy();
-            _room.Leave();
+            _room?.Leave();
         }
 
         public void SendMessage(string keyEvent, Dictionary<string, object> data)

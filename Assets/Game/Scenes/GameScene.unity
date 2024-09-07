@@ -591,6 +591,34 @@ MonoBehaviour:
   - {fileID: 101033404}
   - {fileID: 356489857}
   - {fileID: 145782194}
+--- !u!1 &1154413120 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1480631128982663329, guid: 5907afe82931dba47abd31177690fc35,
+    type: 3}
+  m_PrefabInstance: {fileID: 6885285635129111036}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &1154413124
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1154413120}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 19518579058340498, guid: 5907afe82931dba47abd31177690fc35, type: 3}
 --- !u!1 &1209367218
 GameObject:
   m_ObjectHideFlags: 0
@@ -638,7 +666,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _colyseusSettings: {fileID: 11400000, guid: 5004ad9b362dc4c03b641c1d030488ba, type: 2}
   SpawnPointsService: {fileID: 1103214000}
-  _player: {fileID: 5244103799413890207, guid: 502b9f72353f940a99e3ee18a3b99912, type: 3}
+  _player: {fileID: 271790958574372463, guid: 502b9f72353f940a99e3ee18a3b99912, type: 3}
   _enemy: {fileID: 6250089517982076307, guid: 9b9a330161ce0420f99e3fe590240b53, type: 3}
   _skinService: {fileID: 1209367221}
 --- !u!114 &1209367221
@@ -2361,6 +2389,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 6885285635002836360}
+    - targetCorrespondingSourceObject: {fileID: 1480631128982663329, guid: 5907afe82931dba47abd31177690fc35,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1154413124}
     - targetCorrespondingSourceObject: {fileID: 5618701585267747043, guid: 5907afe82931dba47abd31177690fc35,
         type: 3}
       insertIndex: -1

@@ -445,7 +445,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfbad76ed038643e2961cc1119f29c53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Speed>k__BackingField: 3
+  <Speed>k__BackingField: 6
   <MaxHealth>k__BackingField: 10
   SkinComponent: {fileID: 2761046911430280194}
   _health: {fileID: 5923389649329535925}
@@ -1076,7 +1076,7 @@ MonoBehaviour:
   BulletPrefab: {fileID: 7737068776470832300, guid: 1aabc92ee01b746648ab4ec7dbed200c,
     type: 3}
   _firePoint: {fileID: 4689831668268389561}
-  _shootForce: 15
+  _shootForce: 20
   _shootDelay: 0.2
   _damage: 1
 --- !u!114 &4910723674008435652
